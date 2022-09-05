@@ -4,28 +4,28 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d9d70d547a9ff02c8fb2be44adaf5a8",
+    "content-hash": "55113c1efae8d62becf8ee71b1bf691b",
     "packages": [
         {
             "name": "magicalex/write-ini-file",
-            "version": "v1.2.4",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Magicalex/WriteiniFile.git",
-                "reference": "3a933e8222ed2b0ff724c2d4278666fa257e42ac"
+                "reference": "19fe9bd3041219fecdd63e1f0ae14f86cb6800cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Magicalex/WriteiniFile/zipball/3a933e8222ed2b0ff724c2d4278666fa257e42ac",
-                "reference": "3a933e8222ed2b0ff724c2d4278666fa257e42ac",
+                "url": "https://api.github.com/repos/Magicalex/WriteiniFile/zipball/19fe9bd3041219fecdd63e1f0ae14f86cb6800cb",
+                "reference": "19fe9bd3041219fecdd63e1f0ae14f86cb6800cb",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.0"
+                "php": ">=5.6.1"
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "2.1.0",
-                "phpunit/phpunit": "5.7.*"
+                "phpunit/phpunit": "^7"
             },
             "type": "library",
             "autoload": {
@@ -55,7 +55,7 @@
                 "issues": "https://github.com/Magicalex/WriteiniFile/issues",
                 "source": "https://github.com/Magicalex/WriteiniFile/tree/master"
             },
-            "time": "2018-09-09T12:40:38+00:00"
+            "time": "2019-04-24T23:14:02+00:00"
         },
         {
             "name": "phpgt/typesafegetter",
@@ -1904,5 +1904,5 @@
         "php": ">=8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
