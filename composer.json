@@ -6,7 +6,7 @@
 	"require": {
 		"php": ">=8.0",
 		"phpgt/typesafegetter": "^v1.2",
-		"magicalex/write-ini-file": "v1.2.4"
+		"magicalex/write-ini-file": "v2.0.1"
 	},
 	"require-dev": {
 		"phpstan/phpstan": "^v1.8",
