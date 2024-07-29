@@ -4,7 +4,7 @@ namespace Gt\Config\Test;
 use Gt\Config\ConfigSection;
 use BadMethodCallException;
 
-class ConfigSectionTest extends TestCase {
+class ConfigSectionConfigTest extends ConfigTestCase {
 	public function testGet() {
 		$data = [
 			"name" => "unit test",
