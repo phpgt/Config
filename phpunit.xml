@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        colors="true"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.2/phpunit.xsd"
+        displayDetailsOnTestsThatTriggerWarnings="true"
+        displayDetailsOnTestsThatTriggerDeprecations="true"
+        displayDetailsOnTestsThatTriggerErrors="true"
+        displayDetailsOnTestsThatTriggerNotices="true"
+        cacheDirectory="test/phpunit/_cache"
+>
+  <coverage />
+
+  <testsuites>
+    <testsuite name="main">
+      <directory suffix="Test.php">./test/phpunit</directory>
+    </testsuite>
+  </testsuites>
+
+  <logging />
+
+  <source>
+    <include>
+      <directory>./src</directory>
+    </include>
+  </source>
+</phpunit>

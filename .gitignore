@@ -1,5 +1,6 @@
 /vendor/
 /composer.phar
 /.idea
-/test/unit/_coverage
+/test/phpunit/_cache
+/test/phpunit/_coverage
 .phpunit*

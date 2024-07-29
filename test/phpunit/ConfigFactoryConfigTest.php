@@ -4,7 +4,7 @@ namespace Gt\Config\Test;
 use Gt\Config\ConfigFactory;
 use Gt\Config\Test\Helper\Helper;
 
-class ConfigFactoryTest extends TestCase {
+class ConfigFactoryConfigTest extends ConfigTestCase {
 	public function testCreateForProject():void {
 		$filePath = implode(DIRECTORY_SEPARATOR, [
 			$this->tmp,

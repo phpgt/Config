@@ -4,7 +4,7 @@ namespace Gt\Config\Test;
 use Gt\Config\Generator;
 use Gt\Config\InvalidArgumentException;
 
-class GeneratorTest extends TestCase {
+class GeneratorConfigTest extends ConfigTestCase {
 	public function testGenerateEmptyArgs() {
 		self::expectException(InvalidArgumentException::class);
 		self::expectExceptionMessage("Not enough arguments supplied");
