@@ -10,10 +10,10 @@ jobs:
         php: [ 8.2, 8.3 ]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /tmp/composer-cache
           key: ${{ runner.os }}-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
@@ -27,7 +27,7 @@ jobs:
         run: mkdir /tmp/github-actions/ && tar -cvf /tmp/github-actions/build.tar ./
 
       - name: Upload build archive for test runners
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifact
           path: /tmp/github-actions
@@ -43,7 +43,7 @@ jobs:
       coverage: ${{ steps.store-coverage.outputs.coverage_text }}
 
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: build-artifact
           path: /tmp/github-actions
@@ -60,10 +60,9 @@ jobs:
           php_extensions: xdebug
           coverage_text: _coverage/coverage.txt
           coverage_clover: _coverage/clover.xml
-          configuration: phpunit.xml
 
       - name: Store coverage data
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: code-coverage
           path: _coverage
@@ -73,9 +72,9 @@ jobs:
     needs: [ phpunit ]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: code-coverage
           path: _coverage
@@ -94,7 +93,7 @@ jobs:
         php: [ 8.2, 8.3 ]
 
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: build-artifact
           path: /tmp/github-actions

@@ -5,7 +5,7 @@ use DateTimeImmutable;
 use Gt\Config\Config;
 use Gt\Config\ConfigSection;
 
-class ConfigConfigTest extends ConfigTestCase {
+class ConfigTest extends ConfigTestCase {
 	public function testNotPresentByDefault() {
 		$config = new Config();
 		$this->assertNull($config->get(uniqid()));
