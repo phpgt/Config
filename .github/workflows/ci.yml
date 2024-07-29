@@ -60,6 +60,7 @@ jobs:
           php_extensions: xdebug
           coverage_text: _coverage/coverage.txt
           coverage_clover: _coverage/clover.xml
+          configuration: phpunit.xml
 
       - name: Store coverage data
         uses: actions/upload-artifact@v3

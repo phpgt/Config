@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1f67f5d6f147efaa043c5ff10304d35",
+    "content-hash": "dfe32e83bea08a96bdf9aa330ff01ca6",
     "packages": [
         {
             "name": "magicalex/write-ini-file",
@@ -1808,7 +1808,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.0"
+        "php": ">=8.2"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"
