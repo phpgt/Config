@@ -86,3 +86,9 @@ vendor/bin/config-generate deploy "shopapi.key=test-api-key" "database.schema=lo
 ```
 
 The above command will create a `config.deploy.ini` file (note the first argument of "deploy") and provide overrides for two ini keys using dot notation. Note that because this command will be run within a continuous integration setting, we are expecting there to be a $BRANCH_NAME variable set for us, allowing us to use a schema name containing the current branch. 
+
+# Proudly sponsored by
+
+[JetBrains Open Source sponsorship program](https://www.jetbrains.com/community/opensource/)
+
+[![JetBrains logo.](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.svg)](https://www.jetbrains.com/community/opensource/)
