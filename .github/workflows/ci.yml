@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: [ 8.2, 8.3 ]
+        php: [ 8.2, 8.3, 8.4 ]
 
     steps:
       - uses: actions/checkout@v4
@@ -37,7 +37,7 @@ jobs:
     needs: [ composer ]
     strategy:
       matrix:
-        php: [ 8.2, 8.3 ]
+        php: [ 8.2, 8.3, 8.4 ]
 
     outputs:
       coverage: ${{ steps.store-coverage.outputs.coverage_text }}
@@ -73,7 +73,7 @@ jobs:
     needs: [ phpunit ]
     strategy:
       matrix:
-        php: [ 8.2, 8.3 ]
+        php: [ 8.2, 8.3, 8.4 ]
 
     steps:
       - uses: actions/checkout@v4
@@ -94,7 +94,7 @@ jobs:
     needs: [ composer ]
     strategy:
       matrix:
-        php: [ 8.2, 8.3 ]
+        php: [ 8.2, 8.3, 8.4 ]
 
     steps:
       - uses: actions/download-artifact@v4
@@ -114,12 +114,15 @@ jobs:
   remove_old_artifacts:
     runs-on: ubuntu-latest
 
+    permissions:
+      actions: write
+
     steps:
       - name: Remove old artifacts for prior workflow runs on this repository
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api "/repos/${{ github.repository }}/actions/artifacts?name=build-artifact" | jq ".artifacts[] | select(.name == \"build-artifact\") | .id" > artifact-id-list.txt
+          gh api "/repos/${{ github.repository }}/actions/artifacts" | jq ".artifacts[] | select(.name | startswith(\"build-artifact\")) | .id" > artifact-id-list.txt
           while read id
           do
             echo -n "Deleting artifact ID $id ... "
