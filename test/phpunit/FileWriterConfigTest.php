@@ -6,7 +6,7 @@ use Gt\Config\ConfigSection;
 use Gt\Config\FileWriter;
 use Gt\Config\Test\Helper\Helper;
 
-class FileWriterTest extends TestCase {
+class FileWriterConfigTest extends ConfigTestCase {
 	public function testWrite():void {
 		$sectionValues = [
 			"one" => [

@@ -4,7 +4,7 @@ namespace Gt\Config\Test;
 use Gt\Config\Test\Helper\Helper;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
-class TestCase extends PHPUnitTestCase {
+class ConfigTestCase extends PHPUnitTestCase {
 	protected $tmp;
 
 	protected function setUp():void {

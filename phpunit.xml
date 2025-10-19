@@ -9,13 +9,16 @@
         displayDetailsOnTestsThatTriggerNotices="true"
         cacheDirectory="test/phpunit/_cache"
 >
-  <coverage/>
+  <coverage />
+
   <testsuites>
     <testsuite name="main">
-      <directory>./test/phpunit</directory>
+      <directory suffix="Test.php">./test/phpunit</directory>
     </testsuite>
   </testsuites>
-  <logging/>
+
+  <logging />
+
   <source>
     <include>
       <directory>./src</directory>
