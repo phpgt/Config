@@ -66,4 +66,71 @@ class ConfigTest extends ConfigTestCase {
 		self::assertEquals("April 5th 1988", $dateTime->format("F jS Y"));
 		self::assertNull($sut->getFloat("nothing-here"));
 	}
+
+	public function testWithMergeReturnsNewAndDoesNotMutateOriginal():void {
+		$original = new Config(
+			new ConfigSection("app", [
+				"namespace" => "ExampleAppOriginal",
+			]),
+			new ConfigSection("db", [
+				"host" => "localhost",
+			])
+		);
+
+		$override = new Config(
+			new ConfigSection("app", [
+				"namespace" => "Override",
+				"extra" => "value",
+			]),
+			new ConfigSection("cache", [
+				"enabled" => "1",
+			])
+		);
+
+		$merged = $original->withMerge($override);
+
+		// Ensure new instance returned
+		self::assertNotSame($original, $merged);
+
+		// Original remains unchanged (use section access to avoid env var interference)
+		self::assertSame("ExampleAppOriginal", $original->getSection("app")->get("namespace"));
+		self::assertNull($original->getSection("app")->get("extra"));
+		self::assertNull($original->getSection("cache"));
+
+		// Merged config has expected values
+		self::assertSame("ExampleAppOriginal", $merged->getSection("app")->get("namespace")); // existing preserved
+		self::assertSame("value", $merged->getSection("app")->get("extra")); // new key added
+		self::assertSame("1", $merged->getSection("cache")->get("enabled")); // new section added
+	}
+
+	public function testMergeEmitsDeprecationAndMutates():void {
+		$original = new Config(
+			new ConfigSection("app", [
+				"namespace" => "ExampleAppOriginal",
+			])
+		);
+		$override = new Config(
+			new ConfigSection("app", [
+				"extra" => "value",
+			])
+		);
+
+		$deprecationCount = 0;
+		set_error_handler(function(int $errno, string $errstr) use (&$deprecationCount) {
+			if($errno === E_USER_DEPRECATED) {
+				$deprecationCount++;
+			}
+			return true; // prevent PHPUnit from handling
+		});
+
+		try {
+			$original->merge($override);
+		}
+		finally {
+			restore_error_handler();
+		}
+
+		self::assertSame(1, $deprecationCount);
+		self::assertSame("value", $original->getSection("app")->get("extra")); // mutated
+	}
 }

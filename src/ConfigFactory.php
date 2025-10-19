@@ -48,7 +48,7 @@ class ConfigFactory {
 			}
 
 			if($previousConfig) {
-				$config->merge($previousConfig);
+				$config = $config->withMerge($previousConfig);
 			}
 
 			$previousConfig = $config;

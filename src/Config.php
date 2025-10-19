@@ -52,21 +52,39 @@ class Config implements TypeSafeGetter {
 		return $names;
 	}
 
-	public function merge(Config $configToOverride):void {
+	/**
+	 * Merge another Config into this instance immutably, returning a new Config.
+	 * Existing values are preserved; only missing keys/sections are filled from the overriding config.
+	 */
+	public function withMerge(Config $configToOverride): self {
+		// Start with current sections
+		$mergedSectionList = $this->sectionList;
+
 		foreach($configToOverride->getSectionNames() as $sectionName) {
-			if(isset($this->sectionList[$sectionName])) {
-				foreach($configToOverride->getSection($sectionName)
-				as $key => $value) {
-					if(empty($this->sectionList[$sectionName][$key])) {
-						$this->sectionList[$sectionName] = $this->sectionList[$sectionName]->with($key, $value);
+			$overrideSection = $configToOverride->getSection($sectionName);
+			if(isset($mergedSectionList[$sectionName])) {
+				// Fill only missing keys from override into existing section
+				foreach($overrideSection as $key => $value) {
+					if(empty($mergedSectionList[$sectionName][$key])) {
+						$mergedSectionList[$sectionName] = $mergedSectionList[$sectionName]->with($key, $value);
 					}
 				}
 			}
 			else {
-				$this->sectionList[$sectionName] = $configToOverride->getSection(
-					$sectionName
-				);
+				// Add whole section if it doesn't exist
+				$mergedSectionList[$sectionName] = $overrideSection;
 			}
 		}
+
+		return new self(...array_values($mergedSectionList));
+	}
+
+	/**
+	 * @deprecated Use withMerge() for an immutable alternative. This method will be removed in a future major release.
+	 */
+	public function merge(Config $configToOverride):void {
+		@trigger_error("Config::merge() is deprecated. Use Config::withMerge() for an immutable merge.", E_USER_DEPRECATED);
+		$new = $this->withMerge($configToOverride);
+		$this->sectionList = $new->sectionList;
 	}
 }
