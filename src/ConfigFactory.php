@@ -12,7 +12,7 @@ class ConfigFactory {
 
 	public static function createForProject(
 		string $projectRoot,
-		string $defaultConfigPathName = null
+		?string $defaultConfigPathName = null
 	):Config {
 		$order = array_merge(
 			[self::FILE_DEFAULT, ""],
