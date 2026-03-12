@@ -36,12 +36,12 @@ class ConfigFactory {
 				$fileName .= ".";
 			}
 
-			$fileName .= self::EXTENSION;
-			$config = self::createFromPathName(
-				implode(DIRECTORY_SEPARATOR,[
-					$projectRoot,
-					$fileName,
-				])
+				$fileName .= self::EXTENSION;
+				$config = self::createFromPathName(
+					implode(DIRECTORY_SEPARATOR, [
+						$projectRoot,
+						$fileName,
+					])
 			);
 			if(is_null($config)) {
 				continue;

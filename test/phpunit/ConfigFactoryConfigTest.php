@@ -52,4 +52,35 @@ class ConfigFactoryConfigTest extends ConfigTestCase {
 		self::assertContains("database", $sectionNames);
 		self::assertNotContains("extra", $sectionNames);
 	}
+
+	public function testCreateForProjectPreservesFalseyOverrides():void {
+		$filePath = implode(DIRECTORY_SEPARATOR, [
+			$this->tmp,
+			"config.ini",
+		]);
+		$filePathDefault = implode(DIRECTORY_SEPARATOR, [
+			$this->tmp,
+			"config.default.ini",
+		]);
+
+		file_put_contents($filePathDefault, implode(PHP_EOL, [
+			"[session]",
+			"use_cookies=true",
+			"max_age=60",
+			'label="default"',
+			"",
+		]));
+		file_put_contents($filePath, implode(PHP_EOL, [
+			"[session]",
+			"use_cookies=false",
+			"max_age=0",
+			'label=""',
+			"",
+		]));
+
+		$config = ConfigFactory::createForProject($this->tmp);
+		self::assertFalse($config->getBool("session.use_cookies"));
+		self::assertSame(0, $config->getInt("session.max_age"));
+		self::assertSame("", $config->getString("session.label"));
+	}
 }
