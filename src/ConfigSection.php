@@ -66,7 +66,7 @@ class ConfigSection implements ArrayAccess, Iterator {
 	 */
 	public function valid():bool {
 		$key = $this->getIteratorKey();
-		return isset($this->data[$key]);
+		return isset($this->data[$key ?? ""]);
 	}
 
 	/**

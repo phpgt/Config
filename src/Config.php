@@ -65,7 +65,7 @@ class Config implements TypeSafeGetter {
 			if(isset($mergedSectionList[$sectionName])) {
 				// Fill only missing keys from override into existing section
 				foreach($overrideSection as $key => $value) {
-					if(empty($mergedSectionList[$sectionName][$key])) {
+					if(!$mergedSectionList[$sectionName]->contains($key)) {
 						$mergedSectionList[$sectionName] = $mergedSectionList[$sectionName]->with($key, $value);
 					}
 				}
