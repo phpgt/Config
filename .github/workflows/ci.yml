@@ -4,8 +4,15 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
   composer:
+    permissions:
+      contents: read
+      actions: write
     runs-on: ubuntu-latest
     strategy:
       matrix:
