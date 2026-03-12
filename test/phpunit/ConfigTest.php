@@ -92,15 +92,19 @@ class ConfigTest extends ConfigTestCase {
 		// Ensure new instance returned
 		self::assertNotSame($original, $merged);
 
-		// Original remains unchanged (use section access to avoid env var interference)
-		self::assertSame("ExampleAppOriginal", $original->getSection("app")->get("namespace"));
-		self::assertNull($original->getSection("app")->get("extra"));
-		self::assertNull($original->getSection("cache"));
+			// Original remains unchanged.
+			// Use section access to avoid env var interference.
+			self::assertSame("ExampleAppOriginal", $original->getSection("app")->get("namespace"));
+			self::assertNull($original->getSection("app")->get("extra"));
+			self::assertNull($original->getSection("cache"));
 
-		// Merged config has expected values
-		self::assertSame("ExampleAppOriginal", $merged->getSection("app")->get("namespace")); // existing preserved
-		self::assertSame("value", $merged->getSection("app")->get("extra")); // new key added
-		self::assertSame("1", $merged->getSection("cache")->get("enabled")); // new section added
+			// Merged config has expected values
+			self::assertSame(
+				"ExampleAppOriginal",
+				$merged->getSection("app")->get("namespace")
+			); // existing preserved
+			self::assertSame("value", $merged->getSection("app")->get("extra")); // new key added
+			self::assertSame("1", $merged->getSection("cache")->get("enabled")); // new section added
 	}
 
 	public function testMergeEmitsDeprecationAndMutates():void {
@@ -118,6 +122,7 @@ class ConfigTest extends ConfigTestCase {
 		$deprecationCount = 0;
 		set_error_handler(function(int $errno, string $errstr) use (&$deprecationCount) {
 			if($errno === E_USER_DEPRECATED) {
+				self::assertStringContainsString("Config::merge() is deprecated", $errstr);
 				$deprecationCount++;
 			}
 			return true; // prevent PHPUnit from handling

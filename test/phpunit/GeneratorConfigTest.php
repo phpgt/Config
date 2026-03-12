@@ -29,7 +29,7 @@ class GeneratorConfigTest extends ConfigTestCase {
 		new Generator(["config-generate", "meow", "test"]);
 	}
 
-	public function testGenerateNoKVP() {
+	public function testGenerateNoKvp() {
 		self::expectException(InvalidArgumentException::class);
 		self::expectExceptionMessage("Invalid key-value pair: test");
 		new Generator(["config-generate", "dev", "test"]);
@@ -38,11 +38,15 @@ class GeneratorConfigTest extends ConfigTestCase {
 	public function testGenerateNoSection() {
 		self::expectException(InvalidArgumentException::class);
 		self::expectExceptionMessage("Invalid key-value pair: testkey");
-		$sut = new Generator(["config-generate", "dev", "testkey=testvalue"]);
+		new Generator(["config-generate", "dev", "testkey=testvalue"]);
 	}
 
 	public function testGenerate() {
-		$sut = new Generator(["config-generate", "dev", "testsection.testkey=testvalue"]);
+		$sut = new Generator([
+			"config-generate",
+			"dev",
+			"testsection.testkey=testvalue",
+		]);
 		$sut->generate();
 		$filePath = $this->tmp . "/config.dev.ini";
 		self::assertFileExists($filePath);
