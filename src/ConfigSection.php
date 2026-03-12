@@ -29,6 +29,10 @@ class ConfigSection implements ArrayAccess, Iterator {
 		return $this->data[$name] ?? null;
 	}
 
+	public function contains(string $name):bool {
+		return array_key_exists($name, $this->data);
+	}
+
 	public function with(string $key, string $value):static {
 		$clone = clone $this;
 		$clone->data[$key] = $value;
