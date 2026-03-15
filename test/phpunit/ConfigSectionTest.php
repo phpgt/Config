@@ -4,7 +4,7 @@ namespace Gt\Config\Test;
 use Gt\Config\ConfigSection;
 use BadMethodCallException;
 
-class ConfigSectionConfigTest extends ConfigTestCase {
+class ConfigSectionTest extends ConfigTestCase {
 	public function testGet() {
 		$data = [
 			"name" => "unit test",
@@ -85,5 +85,15 @@ class ConfigSectionConfigTest extends ConfigTestCase {
 		self::assertNotSame($sutOriginal, $sut);
 		self::assertNull($sutOriginal->get("added"));
 		self::assertEquals("new value", $sut->get("added"));
+	}
+
+	public function testAsArray():void {
+		$data = [
+			"name" => "unit test",
+			"number" => "123",
+		];
+
+		$sut = new ConfigSection("example", $data);
+		self::assertSame($data, $sut->asArray());
 	}
 }

@@ -86,4 +86,9 @@ class ConfigSection implements ArrayAccess, IteratorAggregate {
 	public function getName():string {
 		return $this->name;
 	}
+
+	/** @return array<string,mixed> */
+	public function asArray():array {
+		return $this->data;
+	}
 }
