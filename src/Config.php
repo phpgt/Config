@@ -29,6 +29,10 @@ class Config implements TypeSafeGetter {
 		return $this->sectionList[$sectionName] ?? null;
 	}
 
+	public function isProduction():bool {
+		return $this->getBool("app.production") ?? false;
+	}
+
 	protected function getSectionValue(string $name):?string {
 		$parts = explode(".", $name, 2);
 		$section = $this->getSection($parts[0]);
