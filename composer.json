@@ -28,13 +28,6 @@
 		}
 	],
 
-	"funding": [
-		{
-			"type": "github",
-			"url": "https://github.com/sponsors/PhpGt"
-		}
-	],
-
 	"autoload": {
 		"psr-4": {
 			"Gt\\Config\\": "./src"
@@ -44,5 +37,26 @@
 		"psr-4": {
 			"Gt\\Config\\Test\\": "./test/phpunit"
 		}
-	}
+	},
+
+	"scripts": {
+		"phpunit": "vendor/bin/phpunit --configuration phpunit.xml",
+		"phpunit:coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --configuration phpunit.xml --coverage-text",
+		"phpstan": "vendor/bin/phpstan analyse --level 6 src",
+		"phpcs": "vendor/bin/phpcs src --standard=phpcs.xml",
+		"phpmd": "vendor/bin/phpmd src/ text phpmd.xml",
+		"test": [
+			"@phpunit",
+			"@phpstan",
+			"@phpcs",
+			"@phpmd"
+		]
+	},
+
+	"funding": [
+		{
+			"type": "github",
+			"url": "https://github.com/sponsors/PhpGt"
+		}
+	]
 }
