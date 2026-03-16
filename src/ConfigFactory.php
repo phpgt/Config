@@ -51,6 +51,10 @@ class ConfigFactory {
 				$config = $config->withMerge($previousConfig);
 			}
 
+			if($file === "production") {
+				$config = self::withProductionFlag($config);
+			}
+
 			$previousConfig = $config;
 		}
 
@@ -64,5 +68,18 @@ class ConfigFactory {
 
 		$parser = new IniParser($pathName);
 		return $parser->parse();
+	}
+
+	protected static function withProductionFlag(Config $config):Config {
+		$appSection = $config->getSection("app");
+		if($appSection && $appSection->contains("production")) {
+			return $config;
+		}
+
+		return $config->withMerge(new Config(
+			new ConfigSection("app", [
+				"production" => "true",
+			])
+		));
 	}
 }

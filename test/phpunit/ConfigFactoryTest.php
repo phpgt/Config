@@ -34,6 +34,7 @@ class ConfigFactoryTest extends ConfigTestCase {
 		self::assertEquals("this appears by default", $config->get("block1.value.existsByDefault"));
 		self::assertEquals("my.production.database", $config->get("database.host"));
 		self::assertEquals("example", $config->get("database.schema"));
+		self::assertTrue($config->isProduction());
 	}
 
 	public function testCreateFromPathName():void {
@@ -82,5 +83,26 @@ class ConfigFactoryTest extends ConfigTestCase {
 		self::assertFalse($config->getBool("session.use_cookies"));
 		self::assertSame(0, $config->getInt("session.max_age"));
 		self::assertSame("", $config->getString("session.label"));
+	}
+
+	public function testCreateForProjectProductionFileDoesNotOverrideExplicitFlag():void {
+		$filePath = implode(DIRECTORY_SEPARATOR, [
+			$this->tmp,
+			"config.ini",
+		]);
+		$filePathProduction = implode(DIRECTORY_SEPARATOR, [
+			$this->tmp,
+			"config.production.ini",
+		]);
+
+		file_put_contents($filePath, implode(PHP_EOL, [
+			"[app]",
+			"production=false",
+			"",
+		]));
+		file_put_contents($filePathProduction, Helper::INI_OVERRIDE_PROD);
+
+		$config = ConfigFactory::createForProject($this->tmp);
+		self::assertFalse($config->isProduction());
 	}
 }

@@ -67,6 +67,26 @@ class ConfigTest extends ConfigTestCase {
 		self::assertNull($sut->getFloat("nothing-here"));
 	}
 
+	public function testIsProductionDefaultsToFalse():void {
+		putenv("app_production");
+		$config = new Config();
+		self::assertFalse($config->isProduction());
+	}
+
+	public function testIsProductionUsesAppProductionValue():void {
+		putenv("app_production");
+		$config = new Config(
+			new ConfigSection("app", [
+				"production" => "0",
+			])
+		);
+		self::assertFalse($config->isProduction());
+
+		putenv("app_production=true");
+		self::assertTrue($config->isProduction());
+		putenv("app_production");
+	}
+
 	public function testWithMergeReturnsNewAndDoesNotMutateOriginal():void {
 		$original = new Config(
 			new ConfigSection("app", [
