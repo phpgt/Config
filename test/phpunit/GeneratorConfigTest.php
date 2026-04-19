@@ -1,8 +1,8 @@
 <?php
-namespace Gt\Config\Test;
+namespace GT\Config\Test;
 
-use Gt\Config\Generator;
-use Gt\Config\InvalidArgumentException;
+use GT\Config\Generator;
+use GT\Config\InvalidArgumentException;
 
 class GeneratorConfigTest extends ConfigTestCase {
 	public function testGenerateEmptyArgs() {

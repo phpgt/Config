@@ -1,4 +1,4 @@
 <?php
-namespace Gt\Config;
+namespace GT\Config;
 
 class InvalidArgumentException extends ConfigException {}

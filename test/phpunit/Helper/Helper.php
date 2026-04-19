@@ -1,5 +1,5 @@
 <?php
-namespace Gt\Config\Test\Helper;
+namespace GT\Config\Test\Helper;
 
 class Helper {
 	const INI_SIMPLE = <<<INI

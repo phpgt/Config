@@ -1,7 +1,7 @@
 <?php
-namespace Gt\Config\Test;
+namespace GT\Config\Test;
 
-use Gt\Config\Test\Helper\Helper;
+use GT\Config\Test\Helper\Helper;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
 class ConfigTestCase extends PHPUnitTestCase {

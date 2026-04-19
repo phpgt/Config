@@ -1,5 +1,5 @@
 <?php
-namespace Gt\Config;
+namespace GT\Config;
 
 use ArrayAccess;
 use ArrayIterator;

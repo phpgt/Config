@@ -11,10 +11,10 @@ Documentation: https://php.gt/docs/config
 <a href="https://github.com/PhpGt/Config/actions" target="_blank">
 	<img src="https://badge.status.php.gt/config-build.svg" alt="Build status" />
 </a>
-<a href="https://scrutinizer-ci.com/g/PhpGt/Config" target="_blank">
+<a href="https://app.codacy.com/gh/PhpGt/Config" target="_blank">
 	<img src="https://badge.status.php.gt/config-quality.svg" alt="Code quality" />
 </a>
-<a href="https://scrutinizer-ci.com/g/PhpGt/Config" target="_blank">
+<a href="https://app.codecov.io/gh/PhpGt/Config" target="_blank">
 	<img src="https://badge.status.php.gt/config-coverage.svg" alt="Code coverage" />
 </a>
 <a href="https://packagist.org/packages/PhpGt/Config" target="_blank">

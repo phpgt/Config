@@ -1,7 +1,7 @@
 <?php
-namespace Gt\Config\Test;
+namespace GT\Config\Test;
 
-use Gt\Config\ConfigSection;
+use GT\Config\ConfigSection;
 use BadMethodCallException;
 
 class ConfigSectionTest extends ConfigTestCase {
