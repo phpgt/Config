@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-namespace Gt\Config;
+namespace GT\Config;
 
 $autoloadLocations = [
 	implode(DIRECTORY_SEPARATOR, [__DIR__ , "..", "..", "..", "autoload.php"]),

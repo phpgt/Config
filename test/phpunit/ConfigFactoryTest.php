@@ -1,8 +1,8 @@
 <?php
-namespace Gt\Config\Test;
+namespace GT\Config\Test;
 
-use Gt\Config\ConfigFactory;
-use Gt\Config\Test\Helper\Helper;
+use GT\Config\ConfigFactory;
+use GT\Config\Test\Helper\Helper;
 
 class ConfigFactoryTest extends ConfigTestCase {
 	public function testCreateForProject():void {

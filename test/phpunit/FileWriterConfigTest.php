@@ -1,10 +1,10 @@
 <?php
-namespace Gt\Config\Test;
+namespace GT\Config\Test;
 
-use Gt\Config\Config;
-use Gt\Config\ConfigSection;
-use Gt\Config\FileWriter;
-use Gt\Config\Test\Helper\Helper;
+use GT\Config\Config;
+use GT\Config\ConfigSection;
+use GT\Config\FileWriter;
+use GT\Config\Test\Helper\Helper;
 
 class FileWriterConfigTest extends ConfigTestCase {
 	public function testWrite():void {

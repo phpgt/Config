@@ -1,5 +1,5 @@
 <?php
-namespace Gt\Config;
+namespace GT\Config;
 
 class ConfigFactory {
 	const EXTENSION = "ini";

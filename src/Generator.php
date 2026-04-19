@@ -1,5 +1,5 @@
 <?php
-namespace Gt\Config;
+namespace GT\Config;
 
 class Generator {
 	const ALLOWED_SUFFIXES = [

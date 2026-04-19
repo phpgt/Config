@@ -1,9 +1,9 @@
 <?php
-namespace Gt\Config\Test;
+namespace GT\Config\Test;
 
 use DateTimeImmutable;
-use Gt\Config\Config;
-use Gt\Config\ConfigSection;
+use GT\Config\Config;
+use GT\Config\ConfigSection;
 
 class ConfigTest extends ConfigTestCase {
 	public function testNotPresentByDefault() {
@@ -25,6 +25,13 @@ class ConfigTest extends ConfigTestCase {
 
 		$config = new Config();
 		self::assertEquals($value, $config->get($key));
+	}
+
+	public function testLegacyNamespaceAliasesResolve():void {
+		$legacyConfig = new \Gt\Config\Config();
+		self::assertInstanceOf(Config::class, $legacyConfig);
+		self::assertSame(Config::class, $legacyConfig::class);
+		self::assertTrue(is_a($legacyConfig, \Gt\Config\Config::class));
 	}
 
 	public function testLoadSection() {

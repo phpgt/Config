@@ -30,11 +30,13 @@
 
 	"autoload": {
 		"psr-4": {
+			"GT\\Config\\": "./src",
 			"Gt\\Config\\": "./src"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
+			"GT\\Config\\Test\\": "./test/phpunit",
 			"Gt\\Config\\Test\\": "./test/phpunit"
 		}
 	},
