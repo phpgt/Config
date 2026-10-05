@@ -5,7 +5,7 @@
 
 	"require": {
 		"php": ">=8.3",
-		"phpgt/typesafegetter": "^v1.2",
+		"phpgt/typesafegetter": "^1.3",
 		"magicalex/write-ini-file": "v1.2.4"
 	},
 	"require-dev": {
