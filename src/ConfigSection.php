@@ -4,7 +4,7 @@ namespace GT\Config;
 use ArrayAccess;
 use ArrayIterator;
 use BadMethodCallException;
-use Gt\TypeSafeGetter\NullableTypeSafeGetter;
+use GT\TypeSafeGetter\NullableTypeSafeGetter;
 use IteratorAggregate;
 use Traversable;
 

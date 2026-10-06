@@ -1,8 +1,8 @@
 <?php
 namespace GT\Config;
 
-use Gt\TypeSafeGetter\NullableTypeSafeGetter;
-use Gt\TypeSafeGetter\TypeSafeGetter;
+use GT\TypeSafeGetter\NullableTypeSafeGetter;
+use GT\TypeSafeGetter\TypeSafeGetter;
 
 class Config implements TypeSafeGetter {
 	use NullableTypeSafeGetter;
