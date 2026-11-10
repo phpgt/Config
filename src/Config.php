@@ -5,7 +5,11 @@ use GT\TypeSafeGetter\NullableTypeSafeGetter;
 use GT\TypeSafeGetter\TypeSafeGetter;
 
 class Config implements TypeSafeGetter {
-	use NullableTypeSafeGetter;
+	use NullableTypeSafeGetter {
+		getBool as private getGenericBool;
+	}
+
+	private ?Environment $environment = null;
 
 	/** @var ConfigSection[] */
 	protected array $sectionList = [];
@@ -29,8 +33,65 @@ class Config implements TypeSafeGetter {
 		return $this->sectionList[$sectionName] ?? null;
 	}
 
+	/** @SuppressWarnings("PHPMD.BooleanGetMethodName") */
+	public function getBool(string $name):?bool {
+		if($name === "app.production") {
+			return $this->isProduction();
+		}
+
+		return $this->getGenericBool($name);
+	}
+
 	public function isProduction():bool {
-		return $this->getBool("app.production") ?? false;
+		$production = $this->isProductionConfigured();
+		if($this->environment === null) {
+			return $production ?? true;
+		}
+
+		$expected = $this->environment !== Environment::DEVELOPMENT;
+		if($production !== null && $production !== $expected) {
+			throw new EnvironmentConfigurationException(
+				"app.production contradicts the selected "
+				. $this->environment->value . " environment."
+			);
+		}
+
+		return $expected;
+	}
+
+	public function isDevelopment():bool {
+		return !$this->isProduction();
+	}
+
+	public function isStaging():bool {
+		$this->isProduction();
+		return $this->environment === Environment::STAGING;
+	}
+
+	public function withEnvironment(Environment $environment):self {
+		$clone = clone $this;
+		$clone->environment = $environment;
+		$clone->isProduction();
+		return $clone;
+	}
+
+	private function isProductionConfigured():?bool {
+		$value = getenv("app_production");
+		if($value === false) {
+			$value = $this->getSectionValue("app.production");
+		}
+
+		if($value === null) {
+			return null;
+		}
+
+		return match(strtolower(trim($value))) {
+			"1", "true", "yes", "on" => true,
+			"0", "false", "no", "off" => false,
+			default => throw new EnvironmentConfigurationException(
+				"app.production must be a valid boolean."
+			),
+		};
 	}
 
 	protected function getSectionValue(string $name):?string {
@@ -81,7 +142,11 @@ class Config implements TypeSafeGetter {
 			}
 		}
 
-		return new self(...array_values($mergedSectionList));
+		$merged = clone $this;
+		$merged->sectionList = $mergedSectionList;
+		$merged->environment ??= $configToOverride->environment;
+		$merged->isProduction();
+		return $merged;
 	}
 
 	/**
@@ -96,5 +161,6 @@ class Config implements TypeSafeGetter {
 		);
 		$new = $this->withMerge($configToOverride);
 		$this->sectionList = $new->sectionList;
+		$this->environment = $new->environment;
 	}
 }

@@ -22,6 +22,9 @@
 				./test/phpunit/
 			</directory>
 		</testsuite>
+		<testsuite name="integration">
+			<directory>./test/integration/</directory>
+		</testsuite>
 	</testsuites>
 
 	<logging />
