@@ -14,10 +14,6 @@ class ConfigFactoryTest extends ConfigTestCase {
 			$this->tmp,
 			"config.default.ini",
 		]);
-		$filePathDev = implode(DIRECTORY_SEPARATOR, [
-			$this->tmp,
-			"config.dev.ini",
-		]);
 		$filePathProduction = implode(DIRECTORY_SEPARATOR, [
 			$this->tmp,
 			"config.production.ini",
@@ -25,12 +21,11 @@ class ConfigFactoryTest extends ConfigTestCase {
 
 		file_put_contents($filePathDefault, Helper::INI_DEFAULT);
 		file_put_contents($filePath, Helper::INI_SIMPLE);
-		file_put_contents($filePathDev, Helper::INI_OVERRIDE_DEV);
 		file_put_contents($filePathProduction, Helper::INI_OVERRIDE_PROD);
 
 		$config = ConfigFactory::createForProject($this->tmp);
 		self::assertEquals("ExampleApp", $config->get("app.namespace"));
-		self::assertEquals("dev789override", $config->get("block1.value.nested"));
+		self::assertEquals("789", $config->get("block1.value.nested"));
 		self::assertEquals("this appears by default", $config->get("block1.value.existsByDefault"));
 		self::assertEquals("my.production.database", $config->get("database.host"));
 		self::assertEquals("example", $config->get("database.schema"));
@@ -102,7 +97,7 @@ class ConfigFactoryTest extends ConfigTestCase {
 		]));
 		file_put_contents($filePathProduction, Helper::INI_OVERRIDE_PROD);
 
-		$config = ConfigFactory::createForProject($this->tmp);
-		self::assertFalse($config->isProduction());
+		$this->expectException(\GT\Config\EnvironmentConfigurationException::class);
+		ConfigFactory::createForProject($this->tmp);
 	}
 }

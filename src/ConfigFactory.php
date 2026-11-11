@@ -5,60 +5,41 @@ class ConfigFactory {
 	const EXTENSION = "ini";
 	const FILE_DEFAULT = "default";
 	const FILE_OVERRIDE_ORDER = [
-		"dev",
-		"deploy",
-		"production",
+		"dev", "development", "deploy", "stag", "staging", "prod", "production",
+	];
+	const ENVIRONMENT_FILES = [
+		"dev" => Environment::DEVELOPMENT,
+		"development" => Environment::DEVELOPMENT,
+		"stag" => Environment::STAGING,
+		"staging" => Environment::STAGING,
+		"prod" => Environment::PRODUCTION,
+		"production" => Environment::PRODUCTION,
 	];
 
 	public static function createForProject(
 		string $projectRoot,
 		?string $defaultConfigPathName = null
 	):Config {
-		$order = array_merge(
-			[self::FILE_DEFAULT, ""],
-			self::FILE_OVERRIDE_ORDER
-		);
-
-		$previousConfig = null;
-
-		if(!is_null($defaultConfigPathName)) {
-			$previousConfig = ConfigFactory::createFromPathName(
-				$defaultConfigPathName
-			);
-		}
+		$environmentFiles = self::findEnvironmentFiles($projectRoot);
+		$order = array_merge([self::FILE_DEFAULT, ""], self::FILE_OVERRIDE_ORDER);
+		$config = $defaultConfigPathName === null
+			? new Config()
+			: self::createFromPathName($defaultConfigPathName) ?? new Config();
 
 		foreach($order as $file) {
-			$fileName = "config";
-			$fileName .= ".";
-
-			if(!empty($file)) {
-				$fileName .= $file;
-				$fileName .= ".";
+			$path = $projectRoot . DIRECTORY_SEPARATOR . self::fileName($file);
+			$override = self::createFromPathName($path);
+			if($override !== null) {
+				$config = $override->withMerge($config);
 			}
-
-				$fileName .= self::EXTENSION;
-				$config = self::createFromPathName(
-					implode(DIRECTORY_SEPARATOR, [
-						$projectRoot,
-						$fileName,
-					])
-			);
-			if(is_null($config)) {
-				continue;
-			}
-
-			if($previousConfig) {
-				$config = $config->withMerge($previousConfig);
-			}
-
-			if($file === "production") {
-				$config = self::withProductionFlag($config);
-			}
-
-			$previousConfig = $config;
 		}
 
-		return $config ?? $previousConfig;
+		foreach($environmentFiles as $environment) {
+			return $config->withEnvironment($environment);
+		}
+
+		$config->isProduction();
+		return $config;
 	}
 
 	public static function createFromPathName(string $pathName):?Config {
@@ -70,16 +51,27 @@ class ConfigFactory {
 		return $parser->parse();
 	}
 
-	protected static function withProductionFlag(Config $config):Config {
-		$appSection = $config->getSection("app");
-		if($appSection && $appSection->contains("production")) {
-			return $config;
+	/** @return array<string, Environment> */
+	private static function findEnvironmentFiles(string $projectRoot):array {
+		$found = [];
+		foreach(self::ENVIRONMENT_FILES as $file => $environment) {
+			$fileName = self::fileName($file);
+			if(is_file($projectRoot . DIRECTORY_SEPARATOR . $fileName)) {
+				$found[$fileName] = $environment;
+			}
 		}
 
-		return $config->withMerge(new Config(
-			new ConfigSection("app", [
-				"production" => "true",
-			])
-		));
+		if(count($found) > 1) {
+			throw new EnvironmentConfigurationException(
+				"Only one environment configuration file is allowed: "
+				. implode(", ", array_keys($found)) . "."
+			);
+		}
+
+		return $found;
+	}
+
+	private static function fileName(string $suffix):string {
+		return "config" . ($suffix === "" ? "" : ".$suffix") . "." . self::EXTENSION;
 	}
 }

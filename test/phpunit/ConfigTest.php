@@ -74,10 +74,10 @@ class ConfigTest extends ConfigTestCase {
 		self::assertNull($sut->getFloat("nothing-here"));
 	}
 
-	public function testIsProductionDefaultsToFalse():void {
+	public function testIsProductionDefaultsToTrue():void {
 		putenv("app_production");
 		$config = new Config();
-		self::assertFalse($config->isProduction());
+		self::assertTrue($config->isProduction());
 	}
 
 	public function testIsProductionUsesAppProductionValue():void {
@@ -92,6 +92,71 @@ class ConfigTest extends ConfigTestCase {
 		putenv("app_production=true");
 		self::assertTrue($config->isProduction());
 		putenv("app_production");
+	}
+
+	#[\PHPUnit\Framework\Attributes\DataProvider("productionFlags")]
+	public function testIsProduction_parsesEnvironmentBooleans(string $value, bool $expected):void {
+		$previous = getenv("app_production");
+		putenv("app_production=$value");
+		$sut = new Config();
+
+		try {
+			self::assertSame($expected, $sut->isProduction());
+			self::assertSame($expected, $sut->getBool("app.production"));
+			self::assertSame(!$expected, $sut->isDevelopment());
+			self::assertFalse($sut->isStaging());
+		}
+		finally {
+			putenv($previous === false ? "app_production" : "app_production=$previous");
+		}
+	}
+
+	public static function productionFlags():iterable {
+		foreach(["true", "1", "yes", "on", " TRUE "] as $value) {
+			yield [$value, true];
+		}
+		foreach(["false", "0", "no", "off", " FALSE "] as $value) {
+			yield [$value, false];
+		}
+	}
+
+	public function testIsProduction_rejectsAnInvalidFlagWithoutDisclosingItsValue():void {
+		$previous = getenv("app_production");
+		putenv("app_production=secret-invalid-value");
+		$sut = new Config();
+
+		try {
+			$sut->isProduction();
+			self::fail("Expected an invalid environment exception");
+		}
+		catch(\GT\Config\EnvironmentConfigurationException $exception) {
+			self::assertStringContainsString("app.production", $exception->getMessage());
+			self::assertStringNotContainsString("secret-invalid-value", $exception->getMessage());
+		}
+		finally {
+			putenv($previous === false ? "app_production" : "app_production=$previous");
+		}
+	}
+
+	public function testWithMerge_preservesStagingWithoutMutatingTheOriginal():void {
+		$sut = (new Config())->withEnvironment(\GT\Config\Environment::STAGING);
+		$merged = $sut->withMerge(new Config(new ConfigSection("database", ["host" => "staging-db"])));
+
+		self::assertNotSame($sut, $merged);
+		self::assertNull($sut->get("database.host"));
+		self::assertTrue($sut->isStaging());
+		self::assertTrue($merged->isStaging());
+		self::assertTrue($merged->isProduction());
+		self::assertSame("staging-db", $merged->get("database.host"));
+	}
+
+	public function testWithMerge_preservesTheFallbackEnvironment():void {
+		$sut = new Config(new ConfigSection("database", ["host" => "custom"]));
+		$merged = $sut->withMerge((new Config())->withEnvironment(\GT\Config\Environment::DEVELOPMENT));
+
+		self::assertTrue($sut->isProduction());
+		self::assertTrue($merged->isDevelopment());
+		self::assertSame("custom", $merged->get("database.host"));
 	}
 
 	public function testWithMergeReturnsNewAndDoesNotMutateOriginal():void {

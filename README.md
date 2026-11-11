@@ -77,6 +77,14 @@ echo $config->get("database.port");		// 6612
 echo $config->get("database.password");		// super-secret-passw0rd
 ```
 
+## Selecting an environment
+
+Project configuration defaults to production behaviour. Use exactly one environment file: `config.dev.ini` or `config.development.ini`, `config.stag.ini` or `config.staging.ini`, or `config.prod.ini` or `config.production.ini`. Multiple environment files, including aliases for the same environment, throw `EnvironmentConfigurationException` before parsing.
+
+`isProduction()` returns false only in development. Staging keeps production behaviour and can be identified with `isStaging()`. An explicit `app.production=false` also selects development when no environment file is present. Explicit flags and the `app_production` environment variable must agree with a selected environment file.
+
+See the [environment selection documentation](https://github.com/phpgt/Config/wiki/Automatically-loading-config#selecting-an-environment) for load order, boolean values and deployment guidance.
+
 ## Example usage - generating configuration files:
 
 Sometimes it's useful to generate config files on-the-fly, such as from Continuous Integration scripts. Below shows a quick example of how to generate a `config.deploy.ini` file with a few key-values that will override the default.
