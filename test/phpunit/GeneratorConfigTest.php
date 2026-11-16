@@ -52,6 +52,6 @@ class GeneratorConfigTest extends ConfigTestCase {
 		self::assertFileExists($filePath);
 		$contents = file_get_contents($filePath);
 		self::assertStringContainsString("[testsection]", $contents);
-		self::assertStringContainsString("testkey = \"testvalue\"", $contents);
+		self::assertStringContainsString("testkey = testvalue", $contents);
 	}
 }
